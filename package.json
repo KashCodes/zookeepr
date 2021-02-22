@@ -1,0 +1,31 @@
+{
+  "name": "zookeepr",
+  "version": "1.0.0",
+  "description": "Zoo Keeper Database management ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KashCodes/zookeepr.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Javascript",
+    "npm",
+    "Express.js",
+    "Heroku",
+    "Insomnia"
+  ],
+  "author": "Kashay Arbelo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KashCodes/zookeepr/issues"
+  },
+  "homepage": "https://github.com/KashCodes/zookeepr#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
