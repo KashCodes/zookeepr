@@ -7,6 +7,16 @@ const PORT = process.env.PORT || 3001;
 // instantiate the server, to tell it to listen for requests
 const app = express();
 
+/* The `app.use()` method (used in conjunction with the `app.post` function method) is a method executed by our Express.js server that mounts a function to the server that our requests will pass through before getting to the intended endpoint. The functions we can mount to our server are referred to as middleware. --- Middleware functions can serve many different purposes. Ultimately they allow us to keep our route endpoint callback functions more readable while letting us reuse functionality across routes to keep our code DRY. --- Both The `express.urlencoded({extended: true})` method and The `express.json()` method middleware functions need to be set up every time you create a server that's looking to accept POST data.     */
+
+// ***parse incoming string or array data*** //
+// The `express.urlencoded({extended: true})` method is a method built into Express.js. It takes incoming POST data and converts it to key/value pairings that can be accessed in the req.body object. The extended: true option set inside the method call informs our server that there may be sub-array data nested in it as well, so it needs to look as deep into the POST data as possible to parse all of the data correctly.
+app.use(express.urlencoded({ extended: true }));
+
+// ***parse incoming JSON data*** //
+// The `express.json()` method we used takes incoming POST data in the form of JSON and parses it into the req.body JavaScript object. 
+app.use(express.json());
+
 // creating a route that the front-end can request data from.
 const { animals } = require('./data/animals');
 
@@ -95,7 +105,7 @@ app.get('/api/animals/:id', (req, res) => {
 
 
 
-/* Notice that this is just another method of the `app` object that allows us to create routes, much like `app.get()`. This method doesn't say `get` though—it says `post`, which means that we defined a route that listens for POST requests, not GET requests. POST requests differ from GET requests in that they represent the action of a client requesting the server to accept data rather than vice versa. --- notice the route name, `/api/animals` is the same as the GET requests. It'll know which route to use because of how we form the request.    */
+/* Notice that this is just another method of the `app` object that allows us to create routes, much like `app.get()`. This method doesn't say `get` though—it says `post`, which means that we defined a route that listens for POST requests, not GET requests. POST requests differ from GET requests in that they represent the action of a client requesting the server to accept data rather than vice versa. --- notice the route name, `/api/animals` is the same as the GET requests. It'll know which route to use because of how we form the request. --- we also need to set up functionality on the server so it can receive data from the client. --- In order for our server to accept incoming data the way we need it to, we need to tell our Express.js app to intercept our POST request before it gets to the callback function. At that point, the data will be run through a couple of functions to take the raw data transferred over HTTP and convert it to a JSON object. --- This is done with middleware functions, specifically the `app.use` method functions called at the top of the page.   */
 
 //  set up a route on our server that accepts data to be used or stored server-side.
 app.post('/api/animals', (req, res) => {
