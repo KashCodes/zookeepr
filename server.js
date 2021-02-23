@@ -53,6 +53,11 @@ function filterByQuery(query, animalsArray) {
 }
 
 
+// Takes in the id and array of animals and returns a single animal object
+function findById(id, animalsArray) {
+  const result = animalsArray.filter(animal => animal.id === id)[0];
+  return result;
+}
 
 
 
@@ -60,7 +65,12 @@ function filterByQuery(query, animalsArray) {
 
 
 
-/*    the get() method requires two arguments. The first is a string that describes the route the client will have to fetch from. The second is a callback function that will execute every time that route is accessed with a GET request. --- we can use the send() method from the res parameter (short for response) to send the string Hello! to our client. ---  To send JSON, just change send to json. We do this to change the headers (i.e., additional metadata that's sent with every request/response) so that the client knows it's receiving JSON. -- function called filterByQuery() is going to help us handle different kinds of queries.  */
+
+
+
+
+
+/*    the get() method requires two arguments. The first is a string that describes the route the client will have to fetch from. The second is a callback function that will execute every time that route is accessed with a GET request. --- we can use the send() method from the res parameter (short for response) to send the strings for example, to our client. ---  To send JSON, just change send to json. We do this to change the headers (i.e., additional metadata that's sent with every request/response) so that the client knows it's receiving JSON. -- function called filterByQuery() is going to help us handle different kinds of queries.  */
 
 // add the route for const { animals }
 app.get('/api/animals', (req, res) => {
@@ -71,9 +81,22 @@ app.get('/api/animals', (req, res) => {
   res.json(results);
 });
 
+/* Now that we have multiple routes, we have to pay extra attention to the order of the routes. A param route must come after the other GET route. There's a function called findById() in the callback that looks just like filterByQuery(), except this time we're passing req.params.id. We don't use filterByQuery() instease bc, we know for certain that this route should only return a single animal, because the id is unique.--- req.query is multifaceted, often combining multiple parameters, whereas req.param is specific to a single property, often intended to retrieve a single record. */
+
+// The req object gives us access to another property for this case, `req.params`. Unlike the query object, the param object needs to be defined in the route path, with `<route>/:<parameterName>`. This is a new GET route for animals, after the first one, this time adding :id to the end of the route. If the ID can't be found it will return a 404 error. 
+app.get('/api/animals/:id', (req, res) => {
+  const result = findById(req.params.id, animals);
+  if (result) {
+    res.json(result);
+  } else {
+    res.send(404);
+  }
+});
+
 // assign express() to the app variable so that we can later chain on methods to the Express.js server. --- method to make our server listen. References hardcoded PORT in beginning of code(3001), or defaults to 80. 
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
 });
 
 //  stop the previous server by entering `Ctrl+c` and then `Y` at the prompt (if you are prompted), then run `npm start` to start the server again. This time, once the server has started, navigate to http://localhost:3001/api/animals (Links to an external site.) in your browser..
+// git push heroku feature/MVP:main
