@@ -93,10 +93,21 @@ app.get('/api/animals/:id', (req, res) => {
   }
 });
 
+
+
+/* We used another method of the `app` object that allows us to create routes, much like `app.get()`. This says `post`, which means that we defined a route that listens for POST requests, not GET requests. POST requests differ from GET requests in that they represent the action of a client requesting the server to accept data rather than vice versa. --- Earlier, we used `req.query` and `req.params` to look for specific data that our server can send back to the client. With POST requests, we can package up data, typically as an object, and send it to the server. The `req.body` property is where we can access that data on the server side and do something with it.    */
+
 // assign express() to the app variable so that we can later chain on methods to the Express.js server. --- method to make our server listen. References hardcoded PORT in beginning of code(3001), or defaults to 80. 
-app.listen(PORT, () => {
-  console.log(`API server now on port ${PORT}!`);
+app.post('/api/animals', (req, res) => {
+  // req.body is where our incoming content will be
+  console.log(req.body);
+  res.json(req.body);
 });
+
+// set up a route on our server that accepts data to be used or stored server-side.
+app.post('/api/animals', (req, res) => {});
+
+
 
 //  stop the previous server by entering `Ctrl+c` and then `Y` at the prompt (if you are prompted), then run `npm start` to start the server again. This time, once the server has started, navigate to http://localhost:3001/api/animals (Links to an external site.) in your browser..
 // git push heroku feature/MVP:main
