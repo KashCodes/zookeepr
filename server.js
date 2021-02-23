@@ -1,5 +1,7 @@
 // required package/constructor/module
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
 // tell our app (heroku) to use that port, if it has been set, and if not, default to port 80.
 const PORT = process.env.PORT || 3001;
@@ -73,11 +75,17 @@ function findById(id, animalsArray) {
 
 // function to handle taking the data from req.body and adding it to our animals.json file.
 function createNewAnimal(body, animalsArray) {
-  console.log(body);
-  // our function's main code will go here!
-
-  // return finished code to post route for response
-  return body;
+  const animal = body;
+  // push saves data in array
+  animalsArray.push(animal);
+  // writes data to the file.
+  fs.writeFileSync(
+    // specifies the file being written is in a sub directory
+    path.join(__dirname, './data/animals.json'),
+    // converts JS Array to JSON format. Null ensures we don't edit existing data, 2 indicates we want to create white space between our values to make it more readable. 
+    JSON.stringify({ animals: animalsArray }, null, 2)
+  );
+  return animal;
 }
 
 
@@ -121,7 +129,10 @@ app.post('/api/animals', (req, res) => {
   // set id based on what the next index of the array will be
   req.body.id = animals.length.toString();
 
-  res.json(req.body);
+  // add animal to json file and animals array in this function
+  const animal = createNewAnimal(req.body, animals);
+
+  res.json(animal);
 });
 
 
