@@ -1,6 +1,9 @@
 // required package/constructor/module
 const express = require('express');
 
+// tell our app (heroku) to use that port, if it has been set, and if not, default to port 80.
+const PORT = process.env.PORT || 3001;
+
 // instantiate the server, to tell it to listen for requests
 const app = express();
 
@@ -68,9 +71,9 @@ app.get('/api/animals', (req, res) => {
   res.json(results);
 });
 
-// assign express() to the app variable so that we can later chain on methods to the Express.js server. --- method to make our server listen.
-app.listen(3001, () => {
-  console.log(`API server now on port 3001!`);
+// assign express() to the app variable so that we can later chain on methods to the Express.js server. --- method to make our server listen. References hardcoded PORT in beginning of code(3001), or defaults to 80. 
+app.listen(PORT, () => {
+  console.log(`API server now on port ${PORT}!`);
 });
 
 //  stop the previous server by entering `Ctrl+c` and then `Y` at the prompt (if you are prompted), then run `npm start` to start the server again. This time, once the server has started, navigate to http://localhost:3001/api/animals (Links to an external site.) in your browser..
