@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 // instantiate the server, to tell it to listen for requests
 const app = express();
 
-//---------------------
+//--------Middleware-------------//
 /* The `app.use()` method (used in conjunction with the `app.post` function method) is a method executed by our Express.js server that mounts a function to the server that our requests will pass through before getting to the intended endpoint. The functions we can mount to our server are referred to as middleware. --- Middleware functions can serve many different purposes. Ultimately they allow us to keep our route endpoint callback functions more readable while letting us reuse functionality across routes to keep our code DRY. --- Both The `express.urlencoded({extended: true})` method and The `express.json()` method middleware functions need to be set up every time you create a server that's looking to accept POST data.     */
 
 // ***parse incoming string or array data*** //
@@ -19,7 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 // ***parse incoming JSON data*** //
 // The `express.json()` method we used takes incoming POST data in the form of JSON and parses it into the req.body JavaScript object. 
 app.use(express.json());
-//---------------------------
+
+/*middleware that uses the express.static() method. The way it works is that we provide a file path to a location in our application (in this case, the public folder) and instruct the server to make these files static resources. This means that all of our front-end code can now be accessed without having a specific server endpoint created for it!      */
+
+//instructs the server to make certain files readily available and to not gate it behind a server endpoint.
+app.use(express.static('public'));
+//------------ Middlewar ends ---------------//
 
 // creating a route that the front-end can request data from.
 const { animals } = require('./data/animals');
@@ -156,7 +161,12 @@ app.post('/api/animals', (req, res) => {
   }
 });
 
+/* just one job to do, and that is to respond with an HTML page to display in the browser. So instead of using res.json(), we're using res.sendFile(), and all we have to do is tell them where to find the file we want our server to read and send back to the client.  ---  Notice in the res.sendFile() that we're using the path module again to ensure that we're finding the correct location for the HTML code we want to display in the browser. This way, we know it will work in any server environment!       */
 
+// the `/` route points  to the root route of the server and is used to create a homepage for a server.
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 
 
