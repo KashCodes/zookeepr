@@ -10,6 +10,8 @@ const {
 } = require("../lib/animals.js");
 const { animals } = require("../data/animals");
 
+// will mock/fake writing to the file 
+jest.mock('fs');
 
 // tests to create animal object
 test("creates an animal object", () => {
