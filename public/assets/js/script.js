@@ -26,6 +26,29 @@ const handleAnimalFormSubmit = event => {
   }
   const animalObject = { name, species, diet, personalityTraits };
 
+
+  // when we submit a new animal through the form, we collect all the input data into an object and use fetch() to POST our data to the server.  ---   fetch to perfprm GET requests on the adat entered by the form and POST it to the back end. Only need to provide the path bc the request is coming from the server so a full URL is not needed.   ---   we also already created and validated our POST route functionality
+  fetch('/api/animals', {
+    // you have to specify the type of request when Fetch() is used this way - set it to POST which is setup on the server to add new animals to the JSON file. 
+    method: 'POST',
+    // we set the headers property to inform the request that this is going to be JSON data. That way, we can add stringified JSON data for our animalObject to the body property of the request. Without these, we would never receive req.body on the server!
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(animalObject)
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      alert('Error: ' + response.statusText);
+    })
+    .then(postResponse => {
+      console.log(postResponse);
+      alert('Thank you for adding an animal!');
+    });
+
 };
 
 $animalForm.addEventListener('submit', handleAnimalFormSubmit);

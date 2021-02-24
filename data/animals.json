@@ -117,6 +117,19 @@
         "hungry"
       ],
       "id": "11"
+    },
+    {
+      "name": "Niko",
+      "species": "Nikopottamus",
+      "diet": "omnivore",
+      "personalityTraits": [
+        "hungry",
+        "zany",
+        "anxious",
+        "loving",
+        "goofy"
+      ],
+      "id": "12"
     }
   ]
 }
